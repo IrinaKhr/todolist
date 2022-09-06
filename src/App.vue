@@ -1,32 +1,38 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link>
+    <router-link to="/auth" @click="handleSignOut">Sign Out</router-link>
   </nav>
   <router-view />
 </template>
 
 <script>
 import userStore from '@/store/user';
-import {mapState, mapActions} from 'pinia'; 
+import { mapState, mapActions } from 'pinia';
 
 export default {
-  name: "App",
+  name: 'App',
   computed: {
-     ...mapState(userStore, ['user']),
+    ...mapState(userStore, ['user']),
 
   },
   methods: {
-    ...mapActions(userStore, ['fetchUser']),
+    ...mapActions(userStore, ['fetchUser', 'signOut']),
+    handleSignOut() {
+      this.signOut();
+    },
+
   },
   async created() {
     try {
-      await userStore.fetchUser(); // here we call fetch user
-      if (!this.user.value) {
+      await this.fetchUser(); // here we call fetch user
+      console.log(this.user);
+      if (!this.user) {
         // redirect them to logout if the user is not there
-        this.$router.push({ path: "/auth" });
+        this.$router.push({ path: '/auth' });
       } else {
         // continue to dashboard
-        this.$router.push({ path: "/" });
+        this.$router.push({ path: '/' });
       }
     } catch (e) {
       console.error(e);

@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import supabase from '../supabase/index';
- 
+
 export default defineStore('tasks', {
   state: () => ({
-    tasks: null,
+    tasks: [],
   }),
   actions: {
-    async fetchTasks () {
+    async fetchTasks() {
       const { data: tasks } = await supabase
         .from('tasks')
         .select('*')
