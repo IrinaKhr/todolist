@@ -1,63 +1,66 @@
 <template>
   <div>
     <h1>Welcome to ToDoList authentication page!</h1>
-    <h2>Don´t have an account yet?</h2>
+    <h2>Don`t have an account yet?</h2>
     <h3>Fill in your data, please!</h3>
-    <label for='new-email'
-      >Your email
-      <input
-        v-model='newUserEmail'
-        @input='validateEmail'
-        id='new-email'
-        type='email'
-        placeholder='example@gmail.com'
-        required
-      />
-    </label>
-    <label for='new-password'
-      >Create password
-      <input
-        v-model='newUserPassword'
-        @input="validatePassword"
-        id='new-password'
-        type='password'
-        placeholder='new password'
-        required
-      />
-    </label>
-    <label for='confirm-password'
-      >Confirm password
-      <input
-        v-model='confirmPassword'
-        id='confirm-password'
-        type='password'
-        placeholder='confirm password'
-      />
-    </label>
-    <div>{{ message }}</div>
-    <br />
-    <button @click='handleSignUp'>Sign Up</button>
+    <form>
+      <label for='new-email'
+        >Your email
+        <input
+          v-model='newUserEmail'
+          id='new-email'
+          type='email'
+          placeholder='example@gmail.com'
+          required
+        />
+      </label>
+      <label for='new-password'
+        >Create password
+        <input
+          v-model='newUserPassword'
+          id='new-password'
+          type='password'
+          placeholder='new password'
+          required
+        />
+      </label>
+      <label for='confirm-password'
+        >Confirm password
+        <input
+          v-model='confirmPassword'
+          id='confirm-password'
+          type='password'
+          placeholder='confirm password'
+        />
+      </label>
+      <div class='msg'>{{ message }}</div>
+      <br />
+      <button type='submit' @click='handleSignUp'>Sign Up</button>
+    </form>
     <h2>Already registered?</h2>
     <h3>Sign in with your email and password here:</h3>
-    <label for='email'
-      >Your email
-      <input
-        v-model='userEmail'
-        id='email'
-        type='email'
-        placeholder='example@gmail.com'
-        required
-      />
-    </label>
-    <label for='password'
-      >Your password
-      <input
-        v-model='userPassword'
-        id='password'
-        type='password'
-        placeholder='your password'
-      />
-    </label>
+    <form>
+      <label for='email'
+        >Your email
+        <input
+          v-model='userEmail'
+          id='email'
+          type='email'
+          placeholder='example@gmail.com'
+          required
+        />
+      </label>
+      <label for='password'
+        >Your password
+        <input
+          v-model='userPassword'
+          id='password'
+          type='password'
+          placeholder='your password'
+        />
+      </label>
+      <div class='msg'>{{ logmessage }}</div>
+    </form>
     <br />
     <button @click='handleSignIn'>Sign In</button>
   </div>
@@ -77,27 +80,50 @@ export default {
       userPassword: '',
       userEmail: '',
       message: '',
+      logmessage: '',
     };
   },
 
   computed: {
-    ...mapState(userStore, ['user']),
+    ...mapState(userStore, ['user', 'errorMsg']),
   },
   methods: {
     ...mapActions(userStore, ['signUp', 'signIn']),
-    validateEmail() {
-      if (this.newUserEmail.includes('@', '.')) {
+    validateEmail(value) {
+      if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
         this.message = 'Please,create a password!';
       } else {
         this.message = 'Please, enter a valid email!';
       }
     },
-    validatePassword() {
-      if (this.newUserPassword.length < 8) {
-        this.message = 'The password must have at least 8 characters';
+    validateUserEmail(value) {
+      if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+        this.logmessage = '';
+      } else {
+        this.logmessage = 'Please, enter a valid email!';
       }
     },
+    validatePassword(value) {
+      const difference = 6 - value.length;
+      if (value.length < 6) {
+        this.message = `The password must have at least 6 characters! + ${difference} + characters left`;
+      } else {
+        this.message = '';
+      }
+    },
+    validateUserPassword(value) {
+      const difference = 6 - value.length;
+      if (value.length < 6) {
+        this.logmessage = `The password must have 6 characters! + ${difference} + characters left`;
+      } else {
+        this.logmessage = '';
+      }
+    },
+
     handleSignUp() {
+      if (this.errorMsg) {
+        this.message = 'User already registered. Please, sign in below!';
+      }
       if (this.confirmPassword === this.newUserPassword) {
         this.signUp(this.newUserEmail, this.newUserPassword);
       } else {
@@ -105,6 +131,9 @@ export default {
       }
     },
     handleSignIn() {
+      if (this.errorMsg) {
+        this.logmessage = 'User not found! Please, create an account above!';
+      }
       this.signIn(this.userEmail, this.userPassword);
     },
   },
@@ -114,6 +143,24 @@ export default {
         console.log(this.user);
         this.$router.push({ path: '/' });
       }
+    },
+    newUserEmail(value) {
+      // binding this to the data value in the email input
+      this.newUserEmail = value;
+      this.validateEmail(value);
+    },
+    newUserPassword(value) {
+      this.newUserPassword = value;
+      this.validatePassword(value);
+    },
+    userEmail(value) {
+      // binding this to the data value in the email input
+      this.userEmail = value;
+      this.validateUserEmail(value);
+    },
+    userPassword(value) {
+      this.userPassword = value;
+      this.validateUserPassword(value);
     },
   },
 };
@@ -131,5 +178,9 @@ button {
 }
 h1 {
   color: #072acb;
+}
+.msg {
+  color: blueviolet;
+  margin-top: 10px;
 }
 </style>
