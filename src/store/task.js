@@ -13,5 +13,11 @@ export default defineStore('tasks', {
         .order('id', { ascending: false });
       this.tasks = tasks;
     },
+    async addTask(title, userId) {
+      const { data: newTask } = await supabase
+        .from('tasks')
+        .insert([{ title, user_id: userId }]);
+      this.newTask = newTask;
+    },
   },
 });

@@ -88,7 +88,7 @@ export default {
     ...mapState(userStore, ['user', 'errorMsg']),
   },
   methods: {
-    ...mapActions(userStore, ['signUp', 'signIn']),
+    ...mapActions(userStore, ['signUp', 'signIn', 'fetchUser']),
     validateEmail(value) {
       if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
         this.message = 'Please,create a password!';
@@ -120,21 +120,23 @@ export default {
       }
     },
 
-    handleSignUp() {
-      if (this.errorMsg) {
-        this.message = 'User already registered. Please, sign in below!';
-      }
+    async handleSignUp() {
       if (this.confirmPassword === this.newUserPassword) {
-        this.signUp(this.newUserEmail, this.newUserPassword);
+        try {
+          await this.signUp(this.newUserEmail, this.newUserPassword);
+        } catch (error) {
+          this.message = 'User already registered. Please, sign in below!';
+        }
       } else {
         this.message = 'Oops!Try again!The passwords do not match!';
       }
     },
-    handleSignIn() {
-      if (this.errorMsg) {
-        this.logmessage = 'User not found! Please, create an account above!';
+    async handleSignIn() {
+      try {
+        await this.signIn(this.userEmail, this.userPassword);
+      } catch (error) {
+        this.logmessage = 'Please, check that your user name and password are correct or create an account above!';
       }
-      this.signIn(this.userEmail, this.userPassword);
     },
   },
   watch: {
@@ -172,7 +174,7 @@ button {
   font-size: 15px;
   color: rgb(255, 255, 255);
   font-weight: lighter;
-  width: 10%;
+  width: 5em;
   height: 30px;
   margin-top: 20px;
 }
