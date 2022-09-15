@@ -1,23 +1,29 @@
 <template>
   <div class="home">
     <h1>Welcome to Your ToDoList!</h1>
-    <button class="newtaskbutton"> New Task </button>
+    <article>
+      <label for="newtask">
+        <input placeholder='New task name' type="text" v-model="newTask">
+      </label>
+      <button class="newtaskbutton" @click='handleAddTask'> Add to the list </button>
+    </article>
     <table class="tasktable">
       <tr>
         <th>Task Name</th>
         <th>Date</th>
-        <th>Status</th>
+        <th>Check if completed</th>
         <th>Actions</th>
       </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td><label for='taskStatus'><input name="taskStatus" type="checkbox"></label></td>
+      <tr v-for = "task in tasks" :key="task.id">
+        <td> {{task.title}}</td>
+        <td>{{task.inserted_at}}</td>
+        <td><label for='taskStatus'> {{task.is_complete}}
+          <input v-model ="task.is_complete" name="taskStatus" type="checkbox"></label></td>
         <td class="taskbuttons">
-          <button class="taskbutton" @click="editTask(task.id)">
+          <button class="taskbutton" @click="handleEditTask(title)">
             Edit
           </button>
-          <button class="taskbutton" @click="removeTask(task.id)">
+          <button class="taskbutton" @click="handleDelete(taskId)">
             Delete
           </button>
         </td>
@@ -36,23 +42,30 @@ export default {
   data() {
     return {
       newTask: '',
-      tasks: [],
     };
   },
 
   computed: {
-    ...mapState(taskStore, ['tasks'], userStore, ['user']),
+    ...mapState(taskStore, ['tasks']),
+    ...mapState(userStore, ['user']),
   },
   created() {
     this.fetchTasks();
   },
   methods: {
-    ...mapActions(taskStore, ['fetchTasks', 'signOut', 'addTask']),
+    ...mapActions(taskStore, ['fetchTasks', 'signOut', 'addTask', 'editTask', 'deleteTask']),
     handleSignOut() {
       this.signOut();
     },
     handleAddTask() {
-      this.addTask();
+      this.addTask(this.newTask, this.user.id);
+      this.newTask = '';
+    },
+    handleEditTask(title) {
+      this.editTask(title);
+    },
+    handleDelete(taskId) {
+      this.deleteTask(taskId);
     },
   },
 };

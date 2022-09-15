@@ -50,6 +50,14 @@ export default {
   color: #2c3e50;
 }
 
+table {
+  text-align: center;
+}
+
+td {
+  width: 5%;
+}
+
 nav {
   padding: 30px;
 }
@@ -59,7 +67,4 @@ nav a {
   color: #2c3e50;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
