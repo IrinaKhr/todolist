@@ -22,20 +22,40 @@ export default defineStore('tasks', {
       if (error) throw error;
       this.tasks.unshift(newTask[0]);
     },
-    async editTask(title) {
-      const { data, error } = await supabase
-        .from('tasks')
-        .update({ title })
-        .match({ title });
-      this.data = data;
-      this.error = error;
-    },
     async deleteTask(taskId) {
-      const { data: taskDeleted } = await supabase
+      const { error } = await supabase
         .from('tasks')
         .delete()
         .match({ id: taskId });
-      this.taskRemoved = taskDeleted;
+      if (error) throw error;
+      const taskIndex = this.tasks.findIndex(
+        (task) => task.id === taskId,
+      );
+      if (taskId !== -1) {
+        this.tasks.splice(taskIndex, 1);
+      }
+    },
+    async editTask(taskId, newTitle) {
+      const { error } = await supabase
+        .from('tasks')
+        .update({ title: newTitle })
+        .match({ id: taskId });
+      if (error) throw error;
+      const taskIndex = this.tasks.findIndex(
+        (task) => task.id === taskId,
+      );
+      this.tasks[taskIndex].title = newTitle;
+    },
+    async markCompleted(taskId, taskComplete) {
+      const { error } = await supabase
+        .from('tasks')
+        .update({ is_complete: taskComplete })
+        .match({ id: taskId });
+      if (error) throw error;
+      const taskIndex = this.tasks.findIndex(
+        (task) => task.id === taskId,
+      );
+      this.tasks[taskIndex].is_complete = taskComplete;
     },
   },
 });

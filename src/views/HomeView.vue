@@ -1,29 +1,45 @@
 <template>
-  <div class="home">
+  <div class='home'>
     <h1>Welcome to Your ToDoList!</h1>
     <article>
-      <label for="newtask">
-        <input placeholder='New task name' type="text" v-model="newTask">
+      <label for='newtask'>
+        <input placeholder='New task name' type='text' v-model='newTask' />
       </label>
-      <button class="newtaskbutton" @click='handleAddTask'> Add to the list </button>
+      <button class='newtaskbutton' @click='handleAddTask'>
+        Add to the list
+      </button>
     </article>
-    <table class="tasktable">
+    <article>
+      <label for='newtitle'>
+        <input placeholder='Change task title' type='text' v-model='newTitle' />
+      </label>
+    </article>
+    <table class='tasktable'>
       <tr>
         <th>Task Name</th>
         <th>Date</th>
         <th>Check if completed</th>
         <th>Actions</th>
       </tr>
-      <tr v-for = "task in tasks" :key="task.id">
-        <td> {{task.title}}</td>
-        <td>{{task.inserted_at}}</td>
-        <td><label for='taskStatus'> {{task.is_complete}}
-          <input v-model ="task.is_complete" name="taskStatus" type="checkbox"></label></td>
-        <td class="taskbuttons">
-          <button class="taskbutton" @click="handleEditTask(title)">
+      <tr v-for='task in tasks' :key='task.id'>
+        <td>{{ task.title }}</td>
+        <td>{{ task.inserted_at }}</td>
+        <td>
+          <label for='taskStatus'>
+            {{ task.is_complete }}
+            <input
+              @click='handleComplete(task.id, !task.is_complete)'
+              v-model='task.is_complete'
+              name='taskStatus'
+              type='checkbox'
+            />
+          </label>
+        </td>
+        <td class='taskbuttons'>
+          <button class='taskbutton' @click='handleEditTask(task.id, task.title)'>
             Edit
           </button>
-          <button class="taskbutton" @click="handleDelete(taskId)">
+          <button class='taskbutton' @click='handleDelete(task.id)'>
             Delete
           </button>
         </td>
@@ -42,6 +58,7 @@ export default {
   data() {
     return {
       newTask: '',
+      newTitle: '',
     };
   },
 
@@ -53,7 +70,14 @@ export default {
     this.fetchTasks();
   },
   methods: {
-    ...mapActions(taskStore, ['fetchTasks', 'signOut', 'addTask', 'editTask', 'deleteTask']),
+    ...mapActions(taskStore, [
+      'fetchTasks',
+      'signOut',
+      'addTask',
+      'editTask',
+      'deleteTask',
+      'markCompleted',
+    ]),
     handleSignOut() {
       this.signOut();
     },
@@ -61,8 +85,13 @@ export default {
       this.addTask(this.newTask, this.user.id);
       this.newTask = '';
     },
-    handleEditTask(title) {
-      this.editTask(title);
+    handleEditTask(taskId, newTitle) {
+      this.editTask(taskId, newTitle);
+      this.newTitle = '';
+      console.log(newTitle);
+    },
+    handleComplete(taskId, taskComplete) {
+      this.markCompleted(taskId, taskComplete);
     },
     handleDelete(taskId) {
       this.deleteTask(taskId);
