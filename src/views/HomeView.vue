@@ -9,11 +9,6 @@
         Add to the list
       </button>
     </article>
-    <article>
-      <label for='newtitle'>
-        <input placeholder='Change task title' type='text' v-model='newTitle' />
-      </label>
-    </article>
     <table class='tasktable'>
       <tr>
         <th>Task Name</th>
@@ -22,27 +17,7 @@
         <th>Actions</th>
       </tr>
       <tr v-for='task in tasks' :key='task.id'>
-        <td>{{ task.title }}</td>
-        <td>{{ task.inserted_at }}</td>
-        <td>
-          <label for='taskStatus'>
-            {{ task.is_complete }}
-            <input
-              @click='handleComplete(task.id, !task.is_complete)'
-              v-model='task.is_complete'
-              name='taskStatus'
-              type='checkbox'
-            />
-          </label>
-        </td>
-        <td class='taskbuttons'>
-          <button class='taskbutton' @click='handleEditTask(task.id, task.title)'>
-            Edit
-          </button>
-          <button class='taskbutton' @click='handleDelete(task.id)'>
-            Delete
-          </button>
-        </td>
+      <TaskTable />
       </tr>
     </table>
   </div>
@@ -52,13 +27,15 @@
 import { mapState, mapActions } from 'pinia';
 import taskStore from '@/store/task';
 import userStore from '@/store/user';
+import TaskTable from '@/components/TaskTable.vue';
 
 export default {
   name: 'HomeView',
+  components: { TaskTable },
   data() {
     return {
       newTask: '',
-      newTitle: '',
+      editing: false,
     };
   },
 
@@ -85,10 +62,12 @@ export default {
       this.addTask(this.newTask, this.user.id);
       this.newTask = '';
     },
-    handleEditTask(taskId, newTitle) {
+    handleEditTask() {
+      this.editing = true;
+    },
+    doneEdit(taskId, newTitle) {
+      this.editing = false;
       this.editTask(taskId, newTitle);
-      this.newTitle = '';
-      console.log(newTitle);
     },
     handleComplete(taskId, taskComplete) {
       this.markCompleted(taskId, taskComplete);

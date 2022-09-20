@@ -36,15 +36,17 @@ export default defineStore('tasks', {
       }
     },
     async editTask(taskId, newTitle) {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('tasks')
         .update({ title: newTitle })
         .match({ id: taskId });
       if (error) throw error;
-      const taskIndex = this.tasks.findIndex(
-        (task) => task.id === taskId,
-      );
-      this.tasks[taskIndex].title = newTitle;
+      if (data.length) {
+        const taskIndex = this.tasks.findIndex(
+          (task) => task.id === taskId,
+        );
+        this.tasks[taskIndex].title = data[0].title;
+      }
     },
     async markCompleted(taskId, taskComplete) {
       const { error } = await supabase
