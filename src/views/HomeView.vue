@@ -17,7 +17,43 @@
         <th>Actions</th>
       </tr>
       <tr v-for='task in tasks' :key='task.id'>
-      <TaskTable />
+        <td>
+          <span v-show='editing !== task.id'>{{ task.title }}</span>
+          <label @dblclick='edit(task.id)' for='newTitle'>
+            <input
+              @keyup.enter='doneEdit(taskId, newTitle)'
+              v-model='task.title'
+              v-show='editing === task.id'
+            />
+          </label>
+        </td>
+        <td>{{ task.inserted_at }}</td>
+        <td>
+          <label for='taskStatus'>
+            <input
+              @click='handleComplete(task.id, !task.is_complete)'
+              name='taskStatus'
+              type='checkbox'
+            />
+          </label>
+        </td>
+        <td class='taskbuttons'>
+          <button v-show='editing !== task.id'
+            class='taskbutton'
+            @click='edit(task.id)'
+          >
+            Edit
+          </button>
+          <button v-show='editing === task.id'
+            class='taskbutton'
+            @click='doneEdit(taskId, newTitle)'
+          >
+            Save
+          </button>
+          <button class='taskbutton' @click='handleDelete(task.id)'>
+            Delete
+          </button>
+        </td>
       </tr>
     </table>
   </div>
@@ -27,15 +63,15 @@
 import { mapState, mapActions } from 'pinia';
 import taskStore from '@/store/task';
 import userStore from '@/store/user';
-import TaskTable from '@/components/TaskTable.vue';
+// import TaskRow from '@/components/TaskRow.vue';
 
 export default {
   name: 'HomeView',
-  components: { TaskTable },
+  // components: { TaskRow },
   data() {
     return {
       newTask: '',
-      editing: false,
+      editing: 0,
     };
   },
 
@@ -48,9 +84,9 @@ export default {
   },
   methods: {
     ...mapActions(taskStore, [
-      'fetchTasks',
       'signOut',
       'addTask',
+      'fetchTasks',
       'editTask',
       'deleteTask',
       'markCompleted',
@@ -62,8 +98,8 @@ export default {
       this.addTask(this.newTask, this.user.id);
       this.newTask = '';
     },
-    handleEditTask() {
-      this.editing = true;
+    edit(taskId) {
+      this.editing = taskId;
     },
     doneEdit(taskId, newTitle) {
       this.editing = false;
@@ -107,5 +143,11 @@ export default {
   font-weight: lighter;
   width: 8em;
   margin: 5px;
+}
+.edit {
+  display: none;
+}
+.editing .edit {
+  display: block;
 }
 </style>
