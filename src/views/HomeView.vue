@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <button class="btn btn-primary btn-sm" @click='handleSignOut'>Sign Out</button>
+    <button class="btn btn-secondary btn-sm" @click='handleSignOut'>Sign Out</button>
   </nav>
   <div class='home'>
     <h1>My Dream Destinations!</h1>
@@ -8,7 +8,7 @@
       <label for='newtask'>
         <input placeholder='New destination' type='text' v-model='newTask' />
       </label>
-      <button class='newtaskbutton' @click='handleAddTask'>
+      <button class="btn btn-success" @click='handleAddTask'>
         Add to the list
       </button>
     </article>
@@ -31,7 +31,7 @@
             />
           </label>
         </td>
-        <td>{{ task.inserted_at }}</td>
+        <td>{{ formatDate(task.inserted_at) }}</td>
         <td>
           <label for='taskStatus'>
             <input
@@ -42,27 +42,28 @@
             />
           </label>
         </td>
-        <td class='taskbuttons'>
+        <td>
           <button
+            class="btn btn-light btn-sm"
+            data-bs-toggle="tooltip" data-bs-placement="top"
+            data-bs-title="Tooltip on top"
             v-show='editing !== task.id'
-            class='taskbutton'
             @click='edit(task.id)'
           >
             Edit
           </button>
           <button
+            class="btn btn-success btn-sm"
             v-show='editing === task.id'
-            class='taskbutton'
             @click='doneEdit(task.id)'
           >
             Save
           </button>
-          <img
+          <button
+            class="btn btn-light btn-sm"
             @click='handleDelete(task.id)'
-            @keydown='handleDelete(task.id)'
-            alt='delete'
-            src='../assets/icon-delete.png'
-          />
+          > Delete
+          </button>
         </td>
       </tr>
     </table>
@@ -73,6 +74,7 @@
 import { mapState, mapActions } from 'pinia';
 import taskStore from '@/store/task';
 import userStore from '@/store/user';
+import moment from 'moment';
 
 export default {
   name: 'HomeView',
@@ -127,6 +129,9 @@ export default {
     handleDelete(taskId) {
       this.deleteTask(taskId);
     },
+    formatDate(date) {
+      return moment(date).format('DD/MM/yyyy HH:mm');
+    },
   },
 };
 </script>
@@ -135,29 +140,10 @@ export default {
   width: 80%;
   margin-top: 40px;
 }
-
 .home {
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
-}
-.taskbutton {
-  border: 1px #0c9625 solid;
-  background-color: #10af15;
-  font-size: 15px;
-  color: rgb(255, 255, 255);
-  font-weight: lighter;
-  width: 5em;
-  margin: 3px;
-}
-.newtaskbutton {
-  border: 1px #072acb solid;
-  background-color: #072acb;
-  font-size: 15px;
-  color: rgb(255, 255, 255);
-  font-weight: lighter;
-  width: 8em;
-  margin: 5px;
 }
 </style>
