@@ -1,29 +1,33 @@
 <template>
+  <nav>
+    <button class="btn btn-primary btn-sm" @click='handleSignOut'>Sign Out</button>
+  </nav>
   <div class='home'>
-    <h1>Welcome to Your ToDoList!</h1>
+    <h1>My Dream Destinations!</h1>
     <article>
       <label for='newtask'>
-        <input placeholder='New task name' type='text' v-model='newTask' />
+        <input placeholder='New destination' type='text' v-model='newTask' />
       </label>
       <button class='newtaskbutton' @click='handleAddTask'>
         Add to the list
       </button>
     </article>
-    <table class='tasktable'>
+    <table class="tasktable">
       <tr>
-        <th>Task Name</th>
-        <th>Date</th>
-        <th>Check if completed</th>
-        <th>Actions</th>
+        <th>Where</th>
+        <th>Wish date</th>
+        <th>Been there(✓)</th>
+        <th>What to do</th>
       </tr>
       <tr v-for='task in tasks' :key='task.id'>
         <td>
           <span v-show='editing !== task.id'>{{ task.title }}</span>
-          <label @dblclick='edit(task.id)' for='newTitle'>
+          <label for='newTitle'>
             <input
-              @keyup.enter='doneEdit(taskId, newTitle)'
-              v-model='task.title'
+              @keyup.enter='doneEdit(task.id)'
+              v-model='newTitle'
               v-show='editing === task.id'
+              :placeholder='task.title'
             />
           </label>
         </td>
@@ -34,25 +38,31 @@
               @click='handleComplete(task.id, !task.is_complete)'
               name='taskStatus'
               type='checkbox'
+              v-model='task.is_complete'
             />
           </label>
         </td>
         <td class='taskbuttons'>
-          <button v-show='editing !== task.id'
+          <button
+            v-show='editing !== task.id'
             class='taskbutton'
             @click='edit(task.id)'
           >
             Edit
           </button>
-          <button v-show='editing === task.id'
+          <button
+            v-show='editing === task.id'
             class='taskbutton'
-            @click='doneEdit(taskId, newTitle)'
+            @click='doneEdit(task.id)'
           >
             Save
           </button>
-          <button class='taskbutton' @click='handleDelete(task.id)'>
-            Delete
-          </button>
+          <img
+            @click='handleDelete(task.id)'
+            @keydown='handleDelete(task.id)'
+            alt='delete'
+            src='../assets/icon-delete.png'
+          />
         </td>
       </tr>
     </table>
@@ -63,15 +73,15 @@
 import { mapState, mapActions } from 'pinia';
 import taskStore from '@/store/task';
 import userStore from '@/store/user';
-// import TaskRow from '@/components/TaskRow.vue';
 
 export default {
   name: 'HomeView',
-  // components: { TaskRow },
   data() {
     return {
       newTask: '',
-      editing: 0,
+      editing: false,
+      newTitle: '',
+      msg: '',
     };
   },
 
@@ -84,15 +94,20 @@ export default {
   },
   methods: {
     ...mapActions(taskStore, [
-      'signOut',
       'addTask',
       'fetchTasks',
       'editTask',
       'deleteTask',
       'markCompleted',
     ]),
-    handleSignOut() {
-      this.signOut();
+    ...mapActions(userStore, ['signOut']),
+    async handleSignOut() {
+      try {
+        await this.signOut();
+        this.$router.push({ path: '/auth' });
+      } catch (error) {
+        this.msg = 'An error has occured';
+      }
     },
     handleAddTask() {
       this.addTask(this.newTask, this.user.id);
@@ -101,9 +116,10 @@ export default {
     edit(taskId) {
       this.editing = taskId;
     },
-    doneEdit(taskId, newTitle) {
+    doneEdit(taskId) {
+      this.editTask(taskId, this.newTitle);
       this.editing = false;
-      this.editTask(taskId, newTitle);
+      this.newTitle = '';
     },
     handleComplete(taskId, taskComplete) {
       this.markCompleted(taskId, taskComplete);
@@ -143,11 +159,5 @@ export default {
   font-weight: lighter;
   width: 8em;
   margin: 5px;
-}
-.edit {
-  display: none;
-}
-.editing .edit {
-  display: block;
 }
 </style>

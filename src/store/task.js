@@ -41,15 +41,13 @@ export default defineStore('tasks', {
         .update({ title: newTitle })
         .match({ id: taskId });
       if (error) throw error;
-      if (data.length) {
-        const taskIndex = this.tasks.findIndex(
-          (task) => task.id === taskId,
-        );
-        this.tasks[taskIndex].title = data[0].title;
-      }
+      const taskIndex = this.tasks.findIndex(
+        (task) => task.id === taskId,
+      );
+      this.tasks[taskIndex].title = data[0].title;
     },
     async markCompleted(taskId, taskComplete) {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('tasks')
         .update({ is_complete: taskComplete })
         .match({ id: taskId });
@@ -57,7 +55,7 @@ export default defineStore('tasks', {
       const taskIndex = this.tasks.findIndex(
         (task) => task.id === taskId,
       );
-      this.tasks[taskIndex].is_complete = taskComplete;
+      this.tasks[taskIndex].is_complete = data[0].is_complete;
     },
   },
 });
