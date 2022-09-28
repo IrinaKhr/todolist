@@ -1,39 +1,78 @@
 <template>
-  <div class ="auth">
-    <h2>Welcome to Your Dream Travel Planner!</h2>
-  <div class="signin">
-  <h3>Already registered?</h3>
-    <h4>Sign in with your email and password here:</h4>
-    <form>
-      <label for='email'
-        >Your email
-        <input
-          v-model='userEmail'
-          id='email'
-          type='email'
-          placeholder='example@gmail.com'
-          required
-        />
-      </label>
-      <label for='password'
-        >Your password
-        <input
-          v-model='userPassword'
-          id='password'
-          type='password'
-          placeholder='your password'
-        />
-      </label>
-      <div class='msg'>{{ logmessage }}</div>
-    </form>
-    <br />
-    <button class="btn btn-primary" @click='handleSignIn'>Sign In</button>
-  </div>
-  <div class="newacc">
-  <h3>Don`t have an account yet?</h3>
-    <router-link class="link-success" to="/signup" >Create new account</router-link>
-  </div>
-  </div>
+  <section class='vh-100'>
+    <div class='container py-5 h-100'>
+      <div class='row d-flex justify-content-center align-items-center h-100'>
+        <div class='col col-xl-10'>
+          <div class='card' style='border-radius: 1rem'>
+            <div class='row g-0'>
+              <div class='col-md-6 col-lg-7 d-flex align-items-center'>
+                <div class='card-body p-4 p-lg-5 text-black'>
+                  <form>
+                    <div class='d-flex align-items-center mb-3 pb-1'>
+                      <span class='h1 fw-bold mb-0'
+                        >Welcome to your Travel Planner</span
+                      >
+                    </div>
+
+                    <h5 class='fw-normal mb-3 pb-3' style='letter-spacing: 1px'>
+                      Sign into your account
+                    </h5>
+
+                    <div class='form-outline mb-4'>
+                      <label class='form-label' for='form2Example17'
+                        >Email address
+                        <input
+                          type='email'
+                          id='form2Example17'
+                          class='form-control form-control-lg'
+                          v-model='userEmail'
+                          placeholder='example@gmail.com'
+                          required
+                        />
+                      </label>
+                    </div>
+ <div class='msg'>{{ logmessage }}</div>
+                    <div class='form-outline mb-4'>
+                      <label class='form-label' for='form2Example27'
+                        >Password
+                        <input
+                          type='password'
+                          id='form2Example27'
+                          class='form-control form-control-lg'
+                          v-model='userPassword'
+                          placeholder='your password'
+                        />
+                      </label>
+                    </div>
+                    <div class='pt-1 mb-4'>
+                      <button
+                        class='btn btn-primary btn-lg btn-block'
+                        type='button'
+                        @click='handleSignIn'
+                      >
+                        Sign In
+                      </button>
+                    </div>
+                    <label for='checkbox' class='checkbox-wrap checkbox-primary'
+                      >Remember Me
+                      <input type='checkbox' checked='' />
+                      <span class='checkmark'></span>
+                    </label>
+                    <p>
+                      Don't have an account?
+                      <router-link class='link-light' to='/signup'
+                        >Register here</router-link
+                      >
+                    </p>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -82,7 +121,7 @@ export default {
       try {
         await this.signIn(this.userEmail, this.userPassword);
       } catch (error) {
-        this.logmessage = 'Please, check that your user name and password are correct or create an account above!';
+        this.logmessage = 'Please, check that your user name and password are correct or create an account below!';
       }
     },
   },
@@ -106,16 +145,19 @@ export default {
 };
 </script>
 <style>
-.auth {
-  display: flex;
-  flex-flow: column wrap;
-}
-h1 {
-  color: #072acb;
+.card {
+  background-image: url('../assets/Maldives.jpeg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .msg {
-  color: blueviolet;
+  color: red;
   margin-top: 10px;
 }
-
+p {
+  margin-top: 20px;
+}
+.checkbox-wrap {
+  margin-top: 10px;
+}
 </style>
