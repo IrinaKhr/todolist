@@ -18,7 +18,6 @@ export default defineStore('tasks', {
       const { data: newTask, error } = await supabase
         .from('tasks')
         .insert([{ title, user_id: userId }]);
-      console.log('added task', newTask);
       if (error) throw error;
       this.tasks.unshift(newTask[0]);
     },
