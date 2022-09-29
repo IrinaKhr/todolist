@@ -1,10 +1,41 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <router-view />
 </template>
+
+<script>
+import userStore from '@/store/user';
+import { mapState, mapActions } from 'pinia';
+
+export default {
+  name: 'App',
+  computed: {
+    ...mapState(userStore, ['user']),
+
+  },
+  methods: {
+    ...mapActions(userStore, ['fetchUser', 'signOut']),
+    handleSignOut() {
+      this.signOut();
+    },
+
+  },
+  async created() {
+    try {
+      await this.fetchUser(); // here we call fetch user
+      console.log(this.user);
+      if (!this.user) {
+        // redirect them to logout if the user is not there
+        this.$router.push({ path: '/auth' });
+      } else {
+        // continue to dashboard
+        this.$router.push({ path: '/' });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  },
+};
+</script>
 
 <style>
 #app {
@@ -13,6 +44,14 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+table {
+  text-align: center;
+}
+
+td {
+  width: 5%;
 }
 
 nav {
@@ -24,7 +63,4 @@ nav a {
   color: #2c3e50;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
