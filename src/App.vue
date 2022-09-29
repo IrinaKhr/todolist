@@ -22,7 +22,6 @@ export default {
   async created() {
     try {
       await this.fetchUser(); // here we call fetch user
-      console.log(this.user);
       if (!this.user) {
         // redirect them to logout if the user is not there
         this.$router.push({ path: '/auth' });

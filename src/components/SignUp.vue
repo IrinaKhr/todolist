@@ -1,9 +1,9 @@
 <template>
-  <section class='vh-100'>
+  <section class='vh-100' style='background-color: #9a616d'>
     <div class='container py-5 h-100'>
       <div class='row d-flex justify-content-center align-items-center h-100'>
         <div class='col col-xl-10'>
-          <div class='cardsignup' style='border-radius: 1rem'>
+          <div class='cardauth' style='border-radius: 1rem'>
             <div class='row g-0'>
               <div class='col-md-6 col-lg-5 d-none d-md-block'>
               </div>
@@ -136,7 +136,6 @@ export default {
   watch: {
     user() {
       if (this.user) {
-        console.log(this.user);
         this.$router.push({ path: '/' });
       }
     },
@@ -152,10 +151,3 @@ export default {
   },
 };
 </script>
-<style>
-.cardsignup {
-  background-image: url('../assets/Playa.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-</style>
