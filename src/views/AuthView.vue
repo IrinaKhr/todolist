@@ -60,7 +60,7 @@
                     </label>
                     <p>
                       Don't have an account?
-                      <router-link class='link-light' to='/signup'
+                      <router-link class='link-primary' to='/signup'
                         >Register here</router-link
                       >
                     </p>
@@ -159,5 +159,8 @@ p {
 }
 .checkbox-wrap {
   margin-top: 10px;
+}
+.h1 {
+  color: white;
 }
 </style>
