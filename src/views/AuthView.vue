@@ -5,6 +5,8 @@
         <div class='col col-xl-10'>
           <div class='cardauth' style='border-radius: 1rem'>
             <div class='row g-0'>
+              <div class='authimg col-md-6 col-lg-5 d-none d-md-block'>
+              </div>
               <div class='col-md-6 col-lg-7 d-flex align-items-center'>
                 <div class='card-body p-4 p-lg-5 text-black'>
                   <form>
@@ -15,7 +17,7 @@
                     </div>
 
                     <h5 class='fw-normal mb-3 pb-3' style='letter-spacing: 1px'>
-                      Sign into your account
+                      Sign in to your account
                     </h5>
 
                     <div class='form-outline mb-4'>
@@ -145,7 +147,7 @@ export default {
 </script>
 <style>
 .cardauth {
-  background-image: url('../assets/Playa.jpg');
+  background-color: whitesmoke;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -159,7 +161,10 @@ p {
 .checkbox-wrap {
   margin-top: 10px;
 }
-.h1 {
-  color: white;
+.authimg {
+  background-image: url('../assets/Playa.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 1rem 0 0 1rem;
 }
 </style>
