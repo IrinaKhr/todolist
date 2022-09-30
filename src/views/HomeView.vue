@@ -4,29 +4,19 @@
       <div class='row d-flex justify-content-center align-items-center h-100'>
         <div class='col col-xl-10'>
           <div class='card homecard' style='border-radius: 1rem'>
-            <div class='row g-0'>
-              <div class='col-md-6 col-lg-5 d-none d-md-block'>
-                <img
-                  src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp'
-                  alt='login form'
-                  class='img-fluid'
-                  style='border-radius: 1rem 0 0 1rem'
-                />
-              </div>
-              <div class='col-md-6 col-lg-7 d-flex align-items-center'>
                 <div class='card-body p-4 p-lg-5 text-black'>
                   <div class='home'>
                     <h1>My Dream Destinations</h1>
                     <article>
                       <label for='newtask'>
                         <input
-                          class='form-control form-control-lg'
+                          class='form-control form-control'
                           placeholder='New destination'
                           type='text'
                           v-model='newTask'
                         />
                       </label>
-                      <button class='btn btn-lg btn-success' @click='handleAddTask'>
+                      <button class='btn btn-success' @click='handleAddTask'>
                         Add to the list
                       </button>
                     </article>
@@ -100,8 +90,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
   </section>
 </template>
 
@@ -172,7 +160,7 @@ export default {
 </script>
 <style>
 .tasktable {
-  width: 100%;
+  width: 70%;
   margin-top: 40px;
 }
 .home {
@@ -183,12 +171,14 @@ export default {
 }
 .signout {
   position:relative;
-  top: 5pc;
+  top: 1pc;
 }
 h1 {
   margin-bottom: 50px;
 }
 .btn-success {
   margin-left: 20px;
+  background-color: #9a616d;
+  border:#9a616d;
 }
 </style>

@@ -6,6 +6,12 @@
           <div class='cardauth' style='border-radius: 1rem'>
             <div class='row g-0'>
               <div class='col-md-6 col-lg-5 d-none d-md-block'>
+                <img
+                  src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp'
+                  alt='login form'
+                  class='img-fluid'
+                  style='border-radius: 1rem 0 0 1rem'
+                />
               </div>
               <div class='col-md-6 col-lg-7 d-flex align-items-center'>
                 <div class='card-body p-4 p-lg-5 text-black'>
@@ -67,12 +73,15 @@
                         @click.prevent='handleSignUp'
                         class='btn btn-dark btn-lg btn-block'
                         type='button'
-                        to='/thankyou'
                       >
                         Sign up
                       </button>
                     </div>
                   </form>
+                  <button
+                      class='btn btn-light btn-sm signout'>
+                      <router-link class='link-secondary' to='/auth'>Go Back</router-link>
+                    </button>
                 </div>
               </div>
             </div>
