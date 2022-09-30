@@ -5,14 +5,7 @@
         <div class='col col-xl-10'>
           <div class='cardauth' style='border-radius: 1rem'>
             <div class='row g-0'>
-              <div class='col-md-6 col-lg-5 d-none d-md-block'>
-                <img
-                  src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp'
-                  alt='login form'
-                  class='img-fluid'
-                  style='border-radius: 1rem 0 0 1rem'
-                />
-              </div>
+              <div class='col-md-6 col-lg-5 d-none d-md-block authimg2'></div>
               <div class='col-md-6 col-lg-7 d-flex align-items-center'>
                 <div class='card-body p-4 p-lg-5 text-black'>
                   <form>
@@ -21,14 +14,9 @@
                         >Let´s create a new account!</span
                       >
                     </div>
-
-                    <h5 class='fw-normal mb-3 pb-3' style='letter-spacing: 1px'>
-                      Fill in your data here:
-                    </h5>
-
                     <div class='form-outline mb-4'>
                       <label class='form-label' for='new-email'
-                        >Email address
+                        >Your email address
                         <input
                           type='email'
                           id='new-email'
@@ -78,10 +66,11 @@
                       </button>
                     </div>
                   </form>
-                  <button
-                      class='btn btn-light btn-sm signout'>
-                      <router-link class='link-secondary' to='/auth'>Go Back</router-link>
-                    </button>
+                  <button class='btn btn-light btn-sm signout'>
+                    <router-link class='link-secondary' to='/auth'
+                      >Go Back</router-link
+                    >
+                  </button>
                 </div>
               </div>
             </div>
@@ -160,3 +149,11 @@ export default {
   },
 };
 </script>
+<style>
+.authimg2 {
+  background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 1rem 0 0 1rem;
+}
+</style>
