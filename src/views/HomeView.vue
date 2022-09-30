@@ -17,7 +17,7 @@
                         />
                       </label>
                       <button class='btn btn-success' @click='handleAddTask'>
-                        Add to the list
+                        Add
                       </button>
                     </article>
                     <table class='tasktable'>
@@ -180,5 +180,8 @@ h1 {
   margin-left: 20px;
   background-color: #9a616d;
   border:#9a616d;
+}
+@media (max-width: 768px) {
+
 }
 </style>
