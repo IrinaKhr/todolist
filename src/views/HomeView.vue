@@ -70,10 +70,10 @@
                             Save
                           </button>
                           <button
-                            class='btn btn-light btn-sm'
+                            class='btn btn-light btn-sm del'
                             @click='handleDelete(task.id)'
                           >
-                            Delete
+                            X
                           </button>
                         </td>
                       </tr>
@@ -160,7 +160,7 @@ export default {
 </script>
 <style>
 .tasktable {
-  width: 70%;
+  width: 80%;
   margin-top: 40px;
 }
 .home {
@@ -181,9 +181,13 @@ h1 {
   background-color: #9a616d;
   border:#9a616d;
 }
+.del {
+  color: red;
+}
 @media (max-width: 768px) {
    .tasktable {
      font-size: 12px;
+     width: 115%;
    }
    .btn-sm {
     font-size: 10px;
