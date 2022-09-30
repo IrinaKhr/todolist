@@ -6,7 +6,7 @@
           <div class='card homecard' style='border-radius: 1rem'>
                 <div class='card-body p-4 p-lg-5 text-black'>
                   <div class='home'>
-                    <h1>My Dream Destinations</h1>
+                    <h1>My Destinations</h1>
                     <article>
                       <label for='newtask'>
                         <input
@@ -16,15 +16,15 @@
                           v-model='newTask'
                         />
                       </label>
-                      <button class='btn btn-success' @click='handleAddTask'>
+                      <button class='btn btn-secondary' @click='handleAddTask'>
                         Add
                       </button>
                     </article>
                     <table class='tasktable'>
                       <tr>
                         <th>Where</th>
-                        <th>Wish date</th>
-                        <th>Been there(✓)</th>
+                        <th>Add date</th>
+                        <th>Done(✓)</th>
                         <th>What to do</th>
                       </tr>
                       <tr v-for='task in tasks' :key='task.id'>
@@ -63,7 +63,7 @@
                             Edit
                           </button>
                           <button
-                            class='btn btn-success btn-sm'
+                            class='btn btn-secondary btn-sm'
                             v-show='editing === task.id'
                             @click='doneEdit(task.id)'
                           >
@@ -176,12 +176,17 @@ export default {
 h1 {
   margin-bottom: 50px;
 }
-.btn-success {
+.btn-secondary {
   margin-left: 20px;
   background-color: #9a616d;
   border:#9a616d;
 }
 @media (max-width: 768px) {
-
+   .tasktable {
+     font-size: 12px;
+   }
+   .btn-sm {
+    font-size: 10px;
+   }
 }
 </style>
