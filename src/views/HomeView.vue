@@ -187,7 +187,7 @@ h1 {
 @media (max-width: 768px) {
    .tasktable {
      font-size: 14px;
-     width: 100%;
+     width: 110%;
    }
    .btn-sm {
     font-size: 10px;
